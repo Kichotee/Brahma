@@ -41,10 +41,14 @@ const updateJournals = asyncHandler(
 );
 const delJournals = asyncHandler(
 	async (req, res) => {
-        const journal = await Journal.findByIdAndRemove(req.params.id)
-
+        const journal = await Journal.findById(req.params.id)
+        if(!journal){
+            res.status(400)
+            throw new Error ('Journal not Found')
+        }
+        journal.remove()
 		res.status(200).json({
-			message: `deleted ${journal}`,
+			message: ({id:req.params.id}),
 		});
 	}
 );
