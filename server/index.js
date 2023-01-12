@@ -15,11 +15,12 @@ app.use(express.urlencoded({extended:false}))
 
   
 //     ;
-// }).catch(err => {
+// }).catch(err =>  {
 //     console.log(err);
 // })
 
 app.use('/api/goals', require('./routes/journalRoutes'))
+app.use('/api/users', require('./routes/userRoutes'))
 
 app.use(errorHandler)
 
