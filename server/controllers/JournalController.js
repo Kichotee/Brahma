@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Journal = require("../models/journal");
+const User = require("../models//users");
 
 // get goals
 // route api/ getGoals
@@ -7,7 +8,7 @@ const Journal = require("../models/journal");
 
 const getJournals = asyncHandler(
 	async (req, res) => {
-		const journals = await Journal.find();
+		const journals = await Journal.find({user: req.user.id});
 		res.status(200).json({
 			journals,
 		});
@@ -21,6 +22,7 @@ const postJournals = asyncHandler(
 		}
 		const journal = await Journal.create({
 			text: req.body.text,
+			user:req.user.id
 		});
 
 		res.status(200).json(journal);
@@ -33,6 +35,16 @@ const updateJournals = asyncHandler(
             res.status(400)
             throw new Error ('Journal not Found')
         }
+		const user = await User.findById(req.user.id)
+		if(!user){
+			res.status(401)
+				throw new Error('user not found')
+		}
+		if(journal.user.toString()!== user.id){
+			res.status(401)
+			throw new Error('user not authorized') 
+
+		}
         const updatedJournal= await Journal.findByIdAndUpdate(req.params.id, req.body, {
             new:true
         })
@@ -42,6 +54,17 @@ const updateJournals = asyncHandler(
 const delJournals = asyncHandler(
 	async (req, res) => {
         const journal = await Journal.findById(req.params.id)
+		const user = await User.findById(req.user.id)
+
+		if(!user){
+			res.status(401)
+				throw new Error('user not found')
+		}
+		if(journal.user.toString()!== user.id){
+			res.status(401)
+			throw new Error('user not authorized') 
+
+		}
         if(!journal){
             res.status(400)
             throw new Error ('Journal not Found')
