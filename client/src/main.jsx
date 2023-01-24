@@ -5,10 +5,12 @@ import App from './App'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import journalsReducer from "./features/journals";
+import userReducer from "./features/userSlice";
 
 const store = configureStore({
   reducer: {
-    journals: journalsReducer
+    journals: journalsReducer,
+    user:userReducer 
   }
 })
 
