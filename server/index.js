@@ -7,10 +7,15 @@ const {errorHandler}=require('./middleware/errorMiddleware')
 const { urlencoded } = require('body-parser')
 const connectDB= require('./config/db')
 const port = process.env.PORT 
+const cors= require('cors')
+
 
 connectDB()
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(cors({
+    origin:'http://localhost:3000'
+}))
 
 
   

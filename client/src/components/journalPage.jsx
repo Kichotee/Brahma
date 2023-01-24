@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { addJournal, deleteJournal } from "../features/journals";
 
 const JournalPage = () => {
+	const dispatch = useDispatch();
+	const [name, setName] = useState("");
     const journalData = useSelector(
 		(state) => state.journals.value
 	);
-	const dispatch = useDispatch();
-	const [name, setName] = useState("");
+    const {user} = useSelector(
+		(state) => state
+	);
+	
     
     return ( 
         <div className="grid grid-cols-3">

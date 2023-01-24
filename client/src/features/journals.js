@@ -1,20 +1,44 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import { useReducer } from 'react'
+import journalService from './journalservice'
+
+const initialState={
+    journals:[],
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+}
+
+export const createJournal = createAsyncThunk('journal/create',
+    async(journalData, thunkApi)=>{
+        try {
+            const token = thunkApi.getState().user.user.token
+            return await journalService.create(journalData, token)
+            
+        } catch (error) {
+            const message = (err.response && err.response.data && err.response.data.message) ||
+            err.message || err.toString
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+
+)
 
 export const journalSlice = createSlice({
     name:'journals',
-    initialState:{value:[]},
     reducers:{
         addJournal:(state, action)=>{
-            state.value.push(action.payload)
+            state.goals.push(action.payload)
         },
         deleteJournal:(state, action)=>{
-           state.value= state.value.filter((journal)=>
+           state.goals= state.goals.filter((journal)=>
             journal.id !== action.payload.id
            )
         },
         editJournal:(state, action)=>{
-            state.value.map((journal)=>{
+            state.goals.map((journal)=>{
                 if(journal.id===action.payload.id){
                     journal.name===action.payload.name
                 }
