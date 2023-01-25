@@ -12,6 +12,16 @@ const create= async (journalData, token)=>{
     const response = await axios.post(API_URL, journalData, config)
     return response.data
 }
+const getJournals= async ( token)=>{
+    const config= {
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    }
+  
+    const response = await axios.get(API_URL, config)
+    return response.data.journals
+}
 
-const journalService = {create}
+const journalService = {create, getJournals}
 export default journalService
