@@ -22,7 +22,7 @@ const postJournals = asyncHandler(
 		}
 		const journal = await Journal.create({
 			text: req.body.text,
-			user:req.user.id
+			user :req.user.id
 		});
 
 		res.status(200).json(journal);
@@ -35,12 +35,12 @@ const updateJournals = asyncHandler(
             res.status(400)
             throw new Error ('Journal not Found')
         }
-		const user = await User.findById(req.user.id)
-		if(!user){
+		
+		if(!req.user){
 			res.status(401)
 				throw new Error('user not found')
 		}
-		if(journal.user.toString()!== user.id){
+		if(journal.user.toString()!==req.user.id){
 			res.status(401)
 			throw new Error('user not authorized') 
 
@@ -54,13 +54,12 @@ const updateJournals = asyncHandler(
 const delJournals = asyncHandler(
 	async (req, res) => {
         const journal = await Journal.findById(req.params.id)
-		const user = await User.findById(req.user.id)
-
-		if(!user){
+	
+		if(!req.user){
 			res.status(401)
 				throw new Error('user not found')
 		}
-		if(journal.user.toString()!== user.id){
+		if(journal.user.toString()!== req.user.id){
 			res.status(401)
 			throw new Error('user not authorized') 
 

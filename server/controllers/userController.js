@@ -82,12 +82,8 @@ const registerUser = asyncHandler(
 	// public function
 	// api/users POST
 	
-	const getUser = asyncHandler(async (req, res) => {
-		const {_id, email, name}= await User.findById(req.user.id);
-		res.status(200).json({
-			name,
-			email
-		})
+const getUser = asyncHandler(async (req, res) => {
+		res.status(200).json(req.user)
 
 	});
 	// generate token

@@ -25,26 +25,60 @@ export const createJournal = createAsyncThunk('journal/create',
     }
 
 )
+export const getJournals = createAsyncThunk('journal/getJournals',
+    async(_, thunkApi)=>{
+        try {
+            const token = thunkApi.getState().user.user.token
+            return await journalService.getJournals( token)
+            
+        } catch (error) {
+            const message = (err.response && err.response.data && err.response.data.message) ||
+            err.message || err.toString
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+
+)
 
 export const journalSlice = createSlice({
     name:'journals',
+    initialState,
     reducers:{
-        addJournal:(state, action)=>{
-            state.goals.push(action.payload)
-        },
-        deleteJournal:(state, action)=>{
-           state.goals= state.goals.filter((journal)=>
-            journal.id !== action.payload.id
-           )
-        },
-        editJournal:(state, action)=>{
-            state.goals.map((journal)=>{
-                if(journal.id===action.payload.id){
-                    journal.name===action.payload.name
-                }
-            })        
+        reset:(state)=>{
+            state.initialState
         }
+
+    },
+    extraReducers:(builder)=>{
+        builder
+        .addCase(createJournal.pending, (state)=>{
+            state.isLoading=true
+        })
+        .addCase(createJournal.fulfilled, (state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.journals.push(action.payload)
+        })
+        .addCase(createJournal.rejected, (state,action)=>{
+            state.isLoading=false
+            state.isError=true
+            state.message= action.payload
+        })
+        .addCase(getJournals.pending, (state)=>{
+            state.isLoading=true
+        })
+        .addCase(getJournals.fulfilled, (state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.journals.push(action.payload)
+        })
+        .addCase(getJournals.rejected, (state,action)=>{
+            state.isLoading=false
+            state.isError=true
+            state.message= action.payload
+        })
     }
 })
 export default journalSlice.reducer
-export const {addJournal, deleteJournal} = journalSlice.actions
+export const {reset} = journalSlice.actions
