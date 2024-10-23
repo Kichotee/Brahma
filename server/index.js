@@ -18,11 +18,7 @@ app.use(cors({
 }))
 
 
-  
-//     ;
-// }).catch(err =>  {
-//     console.log(err);
-// })
+
 
 app.use('/api/goals', require('./routes/journalRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
