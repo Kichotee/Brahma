@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Journal = require("../models/journal");
-const User = require("../models//users");
+const User = require("../models/users");
 
 // get goals
 // route api/ getGoals
