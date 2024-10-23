@@ -1,35 +1,51 @@
 import React, { useState } from "react";
 import "./App.css";
 import Navbar from "./components/navbar";
-import Main from "./components/mainPage";
-import { BrowserRouter, Routes, Route, NavLink, createRoutesFromElements, RouterProvider } from "react-router-dom";
-import Register from "./components/register";
-import {ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import Login from "./components/Login";
+import Dashboard from "./features/dashboard/pages/mainPage";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  NavLink,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
+import Register from "./features/auth/register";
 
+import "react-toastify/dist/ReactToastify.css";
+import Login from "./features/auth/login";
+import Layout from "./layout/layout";
+import RequireAuth from "./layout/require-auth";
 
 function App() {
-		
-	return (
-		<div className="h-screen w-screen bg-slate-100  font-sans">
-			
-	<BrowserRouter>
-	
-			<Navbar></Navbar>
-			<Routes>
-				<Route index element={<Main/>} />
-				<Route path="/Register" element={<Register/>} />
-				<Route path="/Login" element={<Login/>} />
-				
-			</Routes>
-	<ToastContainer/>
-	</BrowserRouter>
-
-
-			
-		</div>
-	);
+  const protectedRoutes = [
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
+  ];
+  return (
+    <div className="h-screen w-screen bg-slate-100  font-sans">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/Register" element={<Register />} />
+          <Route path="/Login" element={<Login />} />
+          {protectedRoutes.map((route) => {
+            return (
+              <Route
+                path={route.path}
+                element={
+                  <RequireAuth>
+                    <Layout>{route.element}</Layout>
+                  </RequireAuth>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;

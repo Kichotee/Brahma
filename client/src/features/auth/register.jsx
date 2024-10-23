@@ -5,7 +5,7 @@ import {
 	useEffect
 } from "react";
 import {toast} from 'react-toastify'
-import {login} from '../features/userSlice'
+import {register, reset} from '../../store/user-store/userSlice'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faEye,
@@ -16,11 +16,11 @@ import {
 	useSelector,
 } from "react-redux";
 
+const Register = () => {
 
-const Login = () => {
-
-    const [error, setError] = useState(false);
+	const [error, setError] = useState(false);
 	const [formData, setFormData] = useState({
+		username:'',
 		email:'',
 		password:''
 	})
@@ -38,7 +38,9 @@ const Login = () => {
 	};
 	const navigate= useNavigate()
 	const dispatch = useDispatch()
-    const {user, isError, isLoading, message, isSuccess}=useSelector((state)=>{
+
+	
+	const {user, isError, isLoading, message, isSuccess}=useSelector((state)=>{
 		return state.user
 	})
 	const onChange =(e)=>{
@@ -50,6 +52,7 @@ const Login = () => {
 	const handleSubmit = (e) => {
 			e.preventDefault();
 			if (
+				username.length == 0 ||
 				password.length == 0 ||
 				email.length == 0
 				) {
@@ -57,9 +60,9 @@ const Login = () => {
 				}
 				else{
 					const userData = {
-						 email, password
+						name:username, email, password
 					}
-					dispatch(login(userData))
+					dispatch(register(userData))
 				}
 			};
 				
@@ -73,20 +76,42 @@ const Login = () => {
 					navigate('/')
 					
 				}
+				dispatch(reset())
 		
 				// dispatch(reset())
 			}, [user, isError,isLoading,message, navigate,dispatch])
 
-    return ( <>
-    
-    <div className="h-[90%] w-full overflow-hidden ">
+	return (
+		<div className="h-[90%] w-full overflow-hidden">
 			<form
 				className="md:h-3/4 md:w-1/2 mx-auto md:mt-12 bg-teal-700 
-            rounded-2xl md:shadow-sm flex flex-col justify-center 
-            items-center gap-2 w-2/3 h-1/3 mt-32"
+				rounded-2xl md:shadow-sm flex flex-col justify-center 
+				items-center gap-2 w-2/3 h-1/2 mt-32"
 				onSubmit={handleSubmit}
 			>
+				<fieldset className="flex flex-col w-1/2">
+					<label
+						htmlFor="name"
+						className="self-center"
+					>
+						Name
+					</label>
 
+					<input
+						className="w-full  rounded-md border border-teal-40"
+						type="text"
+						name="username"
+						value={username}
+						onChange={onChange
+						
+						}
+					/>
+					{error && username.length == 0 ? (
+						<span className="text-red-700 text-xs">{`userName is empty`}</span>
+					) : (
+						""
+					)}
+				</fieldset>
 				<fieldset className="flex flex-col w-1/2">
 					<label
 						htmlFor="email "
@@ -152,8 +177,7 @@ const Login = () => {
 				</button>
 			</form>
 		</div>
-        
-    </> );
-}
- 
-export default Login;
+	);
+				};
+
+export default Register;

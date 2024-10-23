@@ -1,25 +1,45 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import App from './App'
-import { Provider } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
-import journalsReducer from "./features/journals";
-import userReducer from "./features/userSlice";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import journalsReducer from "./store/journal-store/journal-slice";
+import userReducer from "./store/user-store/userSlice";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 const store = configureStore({
   reducer: {
     journals: journalsReducer,
-    user:userReducer 
+    user: userReducer,
+  },
+});
+const themeStyling = {
+ 
+};
+const theme = extendTheme({
+  components:{
+    Button:{
+      baseStyle:{
+        fontSize:"medium"
+      },
+      variants:{
+        solid: (props) => ({
+          bg: props.colorMode === 'dark' ? 'teal.300' : 'teal.500',
+          color:  props.colorMode ==="dark" ?'#1818#18dd' :"#fff",
+        }),
+      }
+    }
   }
-})
+});
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-
-    </Provider>
+    <ChakraProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ChakraProvider>
   </React.StrictMode>
 );

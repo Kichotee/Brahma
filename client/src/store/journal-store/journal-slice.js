@@ -40,6 +40,21 @@ export const getJournals = createAsyncThunk('journal/getJournals',
     }
 
 )
+export const deleteJournals = createAsyncThunk('journal/deleteJournal',
+    async(id, thunkApi)=>{
+        try {
+            const token = thunkApi.getState().user.user.token
+            return await journalService.deleteJournals( token,id)
+            
+        } catch (error) {
+            const message = (err.response && err.response.data && err.response.data.message) ||
+            err.message || err.toString
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+
+)
 
 export const journalSlice = createSlice({
     name:'journals',
@@ -58,7 +73,8 @@ export const journalSlice = createSlice({
         .addCase(createJournal.fulfilled, (state,action)=>{
             state.isLoading=false
             state.isSuccess=true
-            state.journals.push(action.payload)
+            state.journals=[action.payload,...state.journals]
+
         })
         .addCase(createJournal.rejected, (state,action)=>{
             state.isLoading=false
@@ -69,11 +85,33 @@ export const journalSlice = createSlice({
             state.isLoading=true
         })
         .addCase(getJournals.fulfilled, (state,action)=>{
+
             state.isLoading=false
             state.isSuccess=true
-            state.journals.push(action.payload)
+            state.journals=action.payload.data.journals
+            console.log(action)
+
+
         })
         .addCase(getJournals.rejected, (state,action)=>{
+            state.isLoading=false
+            state.isError=true
+            state.message= action.payload
+        })
+       .addCase(deleteJournals.pending, (state)=>{
+            state.isLoading=true
+            state.isSuccess=false
+
+        }) 
+        .addCase(deleteJournals.fulfilled, (state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.journals=[...state.journals.filter((journal)=>journal._id!==action.payload.data.id)]
+            console.log(action)
+        })
+        .addCase(deleteJournals.rejected, (state,action)=>{
+
+
             state.isLoading=false
             state.isError=true
             state.message= action.payload
