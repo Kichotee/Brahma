@@ -8,5 +8,4 @@ router.route('/').get( protect,getJournals).post(protect, postJournals)
 router.route('/').put(protect, updateJournals); 
 router.route('/:id').delete(protect,delJournals)
 
-
 module.exports = router
