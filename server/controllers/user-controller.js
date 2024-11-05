@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/users");
+const { sendMail } = require("../services/mailService");
 
 // authenticate a user
 // public function
@@ -20,8 +21,8 @@ const loginUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400).res.json({
-      message: "InVALID USER",
+    res.status(400).json({
+      message: "Invalid credentials",
     });
   }
 });
@@ -31,6 +32,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+  
   if (!name || !email || !password) {
     res.status(400);
     throw new Error("please fill all fields");
@@ -53,6 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
+  
     res.status(201).json({
       _id: user.id,
       name: user.name,
@@ -61,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400).res.json({
-      message: "InVALID USER",
+      message: "invalid user",
     });
   }
 });
@@ -73,11 +76,11 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
 // generate token
-function generateToken (id) {
+function generateToken(id) {
   return jwt.sign({ id }, process.env.JWT_Token, {
     expiresIn: "30d",
   });
-};
+}
 
 module.exports = {
   registerUser,

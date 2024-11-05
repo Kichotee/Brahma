@@ -22,6 +22,7 @@ app.use(cors({
 
 app.use('/api/goals', require('./routes/journal-routes'))
 app.use('/api/users', require('./routes/user-routes'))
+app.use('/api/category', require('./routes/category-routes'))
 
 app.use(errorHandler)
 
