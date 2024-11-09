@@ -25,35 +25,30 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center py-2.5 w-full  text-slate-100 bg-teal-700">
-      <h1 className="font-bold text-2xl text-slate-100 px-2 ">Daily Brahma</h1>
-      <div className=" w-1/3 flex justify-end gap-5">
-        {user ? (
-          <>
-            <Flex gap={5}>
-              <Button 
-              variant={"text"}
-                className="!font-light flex px-2 text-sm  h-full items-center gap-4"
-                onClick={onLogout}
-              >
-                <p>Logout</p>
-               <LuLogOut/>
-              </Button>
-            </Flex>
-          </>
-        ) : (
-          <>
-            <NavLink className="flex px-2  h-full items-center " to="/Login">
-              Login
-              <FontAwesomeIcon className="pl-2" icon={faUser} />
-            </NavLink>
+    <div className="flex justify-between items-center  w-full h-full pt-3 text-slate-100 bg-cyan-800">
+      <h1 className="font-bold text-2xl text-slate-100  px-2 ">Daily Brahma</h1>
+      <div className="flex items-stretch  h-full w-1/3 justify-center  gap-5  ">
+        <NavLink className="flex px-2  h-full py-2.5  duration-300 hover:bg-cyan-600 rounded-t-xl items-center " to="/Login">
+          Groups
+         
+        </NavLink>
 
-            <NavLink className="flex px-2  h-full items-center " to="/Register">
-              Signup
-              <FontAwesomeIcon className="pl-2" icon={faSignInAlt} />
-            </NavLink>
-          </>
-        )}
+        <NavLink className="flex px-2 py-2.5 h-full items-center rounded-t-[16px]  duration-300 hover:bg-cyan-600" to="/Register">
+          Settings
+         
+        </NavLink>
+      </div>
+      <div className="  flex justify-end gap-5">
+        <Flex gap={5}>
+          <Button
+            variant={"text"}
+            className="!font-light flex px-2 text-sm  h-full items-center gap-4"
+            onClick={onLogout}
+          >
+            <p>Logout</p>
+            <LuLogOut />
+          </Button>
+        </Flex>
       </div>
     </div>
   );

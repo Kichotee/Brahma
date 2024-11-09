@@ -35,10 +35,10 @@ const JournalPage = () => {
             onChange={(event) => setText(event.target.value)}
           ></textarea>
           <Button
-            variant={"outline"}
-            color={"#F0f0f0"}
+          
+            // color={"#F0f0f0"}
             type="submit"
-            className="bg-teal-700 px-2 rounded text-slate-100 "
+            // className="bg-teal-700 px-2 rounded text-slate-100 "
           >
             Add
           </Button>

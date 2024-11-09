@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/goals";
+const API_URL = import.meta.env.VITE_BASEURL+"api/goals";
 
 const create = async (journalData, token) => {
   const config = {

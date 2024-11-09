@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import { useReducer } from 'react'
-import journalService from './journalservice'
+import journalService from './journal-service'
 
 const initialState={
     journals:[],

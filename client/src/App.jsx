@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Navbar from "./components/navbar";
-import Dashboard from "./features/dashboard/pages/mainPage";
+import Dashboard from "./features/dashboard/pages/dashboard";
 import {
   BrowserRouter,
   Routes,
@@ -25,7 +25,7 @@ function App() {
     },
   ];
   return (
-    <div className="h-screen w-screen bg-slate-100  font-sans">
+    <div className="h-screen w-screen bg-slate-100  font-raleway">
       <BrowserRouter>
         <Routes>
           <Route path="/Register" element={<Register />} />

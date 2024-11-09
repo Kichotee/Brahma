@@ -21,15 +21,17 @@ const Journal = ({ journal }) => {
         p={4}
         bg={"white"}
         minW={234}
+        dropShadow={"xl"}
+        
         rounded={"xl"}
-        className=""
+        className="shadow-sm shadow-[#0890b21d]"
         pos={"relative"}
       >
         <div className=""></div>
         <h2>{new Date(journal._id).toLocaleString}</h2>
 
         <div className="flex justify-between items-center">
-          <h2 className="text-sm first-letter:capitalize font-semibold text-teal-500">{journal.title || "Title"}</h2>
+          <h2 className="text-sm first-letter:capitalize font-semibold text-cyan-600 ">{journal.title || "Title"}</h2>
           <button onClick={onDelete}>
             <LuTrash size={16} color="#ddd" />
           </button>

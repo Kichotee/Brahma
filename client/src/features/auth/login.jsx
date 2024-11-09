@@ -52,23 +52,23 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    if (isSuccess || user) {
-      navigate("/");
-    }
+  // useEffect(() => {
+  //   if (isError) {
+  //     toast.error(message);
+  //   }
+  //   if (isSuccess || user) {
+  //     navigate("/");
+  //   }
 
-    // dispatch(reset())
-  }, [user, isError, isLoading, message, navigate, dispatch]);
+  //   // dispatch(reset())
+  // }, [user, isError, isLoading, message, navigate, dispatch]);
 
   return (
     <>
       <div className="h-[90%] w-full  flex justify-center items-center overflow-hidden ">
         <form
           className="   border border-teal-700 
-            rounded-2xl md:shadow-sm flex flex-col w-full max-w-[80vw] py-6 lg:max-w-[40vw] justify-center 
+            rounded-2xl md:shadow-sm flex flex-col w-full px-4 max-w-[80vw] py-6 lg:max-w-[40vw] justify-center 
             items-center gap-2 "
           onSubmit={handleSubmit}
         >

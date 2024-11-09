@@ -1,183 +1,159 @@
-import { Link,useNavigate } from "react-router-dom";
-import {
-	useRef,
-	useState,
-	useEffect
-} from "react";
-import {toast} from 'react-toastify'
-import {register, reset} from '../../store/user-store/userSlice'
+import { Link, useNavigate } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { register, reset } from "../../store/user-store/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faEye,
-	faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-	useDispatch,
-	useSelector,
-} from "react-redux";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@chakra-ui/react";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const Register = () => {
+  const [error, setError] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const { username, email, password } = formData;
 
-	const [error, setError] = useState(false);
-	const [formData, setFormData] = useState({
-		username:'',
-		email:'',
-		password:''
-	})
-	const {username, email, password} = formData
+  const [passwordType, setPasswordType] = useState("password");
+  const pass = useRef();
+  const showPassword = () => {
+    if (passwordType == "password") {
+      setPasswordType("text");
+    } else if (passwordType == "text") {
+      setPasswordType("password");
+    }
+  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-	const [passwordType, setPasswordType] =
-	useState("password");
-	const pass = useRef();
-	const showPassword = () => {
-		if (passwordType == "password") {
-			setPasswordType("text");
-		} else if (passwordType == "text") {
-			setPasswordType("password");
-		}
-	};
-	const navigate= useNavigate()
-	const dispatch = useDispatch()
+  const { user, isError, isLoading, message, isSuccess } = useSelector(
+    (state) => {
+      return state.user;
+    }
+  );
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-	
-	const {user, isError, isLoading, message, isSuccess}=useSelector((state)=>{
-		return state.user
-	})
-	const onChange =(e)=>{
-		setFormData((prevState)=>({
-			...prevState,
-				[e.target.name] : e.target.value}))
-		}
-	
-	const handleSubmit = (e) => {
-			e.preventDefault();
-			if (
-				username.length == 0 ||
-				password.length == 0 ||
-				email.length == 0
-				) {
-					setError(true);
-				}
-				else{
-					const userData = {
-						name:username, email, password
-					}
-					dispatch(register(userData))
-				}
-			};
-				
-		
-		
-		 useEffect(()=>{
-				if (isError) {
-					toast.error(message)
-				}
-				if (isSuccess|| user) {
-					navigate('/')
-					
-				}
-				dispatch(reset())
-		
-				// dispatch(reset())
-			}, [user, isError,isLoading,message, navigate,dispatch])
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username.length == 0 || password.length == 0 || email.length == 0) {
+      setError(true);
+    } else {
+      const userData = {
+        name: username,
+        email,
+        password,
+      };
+      dispatch(register(userData));
+    }
+  };
 
-	return (
-		<div className="h-[90%] w-full overflow-hidden">
-			<form
-				className="md:h-3/4 md:w-1/2 mx-auto md:mt-12 bg-teal-700 
-				rounded-2xl md:shadow-sm flex flex-col justify-center 
-				items-center gap-2 w-2/3 h-1/2 mt-32"
-				onSubmit={handleSubmit}
-			>
-				<fieldset className="flex flex-col w-1/2">
-					<label
-						htmlFor="name"
-						className="self-center"
-					>
-						Name
-					</label>
+  //  useEffect(()=>{
+  // 		if (isError) {
+  // 			toast.error(message)
+  // 		}
+  // 		if (isSuccess|| user) {
+  // 			navigate('/')
 
-					<input
-						className="w-full  rounded-md border border-teal-40"
-						type="text"
-						name="username"
-						value={username}
-						onChange={onChange
-						
-						}
-					/>
-					{error && username.length == 0 ? (
-						<span className="text-red-700 text-xs">{`userName is empty`}</span>
-					) : (
-						""
-					)}
-				</fieldset>
-				<fieldset className="flex flex-col w-1/2">
-					<label
-						htmlFor="email "
-						className="self-center"
-					>
-						Email
-					</label>
-					<input
-						className="w-full rounded-md border border-teal-400"
-						type="email"
-						name="email"
-						value={email}
-						onChange={onChange
-						}
-					/>
-					{error && email.length == 0 ? (
-						<span className="text-red-700 text-xs">{`email is empty`}</span>
-					) : (
-						""
-					)}
-				</fieldset>
-				<fieldset className="flex flex-col w-1/2 relative">
-					<label
-						htmlFor="password"
-						className="self-center"
-					>
-						password
-					</label>
-					<input
-						ref={pass}
-						className="w-full rounded-md border border-teal-400"
-						type={passwordType}
-						value={password}
-						name="password"
-						onChange={onChange}
-					/>
-					<FontAwesomeIcon
-						onClick={showPassword}
-						icon={
-							passwordType == "password"
-								? faEye
-								: faEyeSlash
-						}
-						className="absolute right-2 bottom-[10%] cursor-pointer"
-					/>
-					{error && password.length == 0 ? (
-						<span className="text-red-700 text-xs">{`password is empty`}</span>
-					) : (
-						""
-					)}
-					{/* {error &&
-					!password.includes(
-						"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-					) ? (
-						<span className="text-red-700 text-xs">{`password does not contain a number, uppercase or lowercase letter`}</span>
-					) : (
-						""
-					)} */}
-				</fieldset>
+  // 		}
+  // 		dispatch(reset())
 
-				<button className="bg-teal-500 w-28 mt-4 rounded-md text-slate-100" type="Submit">		
-							Login	
-				</button>
-			</form>
-		</div>
-	);
-				};
+  // 		// dispatch(reset())
+  // 	}, [user, isError,isLoading,message, navigate,dispatch])
+
+  return (
+    <div className="h-[90%] w-full  flex justify-center flex-col gap-2 items-center overflow-hidden ">
+      <form
+        className="border border-teal-700 
+            rounded-2xl md:shadow-sm flex flex-col w-full max-w-[80vw] py-6 px-4 lg:max-w-[30vw] justify-center 
+            items-center gap-4"
+        onSubmit={handleSubmit}
+      >
+        <fieldset className="flex flex-col items-start w-full">
+          <label htmlFor="email " className="text-sm text-black/60">
+            Name
+          </label>
+
+          <div className="border rounded-lg focus-within:border-teal-600 text-xs duration-200 overflow-hidden focus:outline-none text-[#181818ab]  focus:border-teal-500 w-full">
+            <input
+              className="w-full  focus:outline-none px-2 py-1 focus:border-none"
+              name="username"
+              value={username}
+              onChange={onChange}
+            />
+          </div>
+          {error && username.length == 0 ? (
+            <span className="text-red-700 self-start text-xs">{`userName is empty`}</span>
+          ) : (
+            ""
+          )}
+        </fieldset>
+        <fieldset className="flex flex-col w-full item-start">
+          <label htmlFor="email " className="text-sm text-black/60">
+            Email
+          </label>
+          <div className="border rounded-lg focus-within:border-teal-600 text-xs duration-200 overflow-hidden focus:outline-none text-[#181818ab]  focus:border-teal-500 w-full">
+            <input
+              className="w-full  focus:outline-none px-2 py-1 focus:border-none"
+              name="email"
+              value={email}
+              onChange={onChange}
+            />
+          </div>
+          {error && email.length == 0 ? (
+            <span className="text-red-700 self-start text-xs">{`email is empty`}</span>
+          ) : (
+            ""
+          )}
+        </fieldset>
+        <fieldset className="flex flex-col w-full items-start relative">
+          <label htmlFor="email " className="text-sm text-black/60">
+            Password
+          </label>
+          <div className="relative w-full">
+            <div className="border relative rounded-lg focus-within:border-teal-600 text-xs duration-200 overflow-hidden focus:outline-none text-[#181818ab]  focus:border-teal-500 w-full">
+              <input
+                className="w-full  focus:outline-none px-2 py-1 focus:border-none"
+                name="password"
+                type={passwordType}
+                value={password}
+                onChange={onChange}
+              />
+            </div>
+          <button className="absolute right-2 bottom-[20%] text-sm cursor-pointer">
+            {passwordType == "password" ? <LuEye /> : <LuEyeOff />}
+          </button>
+          </div>
+
+
+          {error && password.length == 0 ? (
+            <span className="text-red-700 text-xs">{`password is empty`}</span>
+          ) : (
+            ""
+          )}
+        </fieldset>
+
+        <Button
+          className="bg-teal-500 w-28 mt-4 rounded-md text-slate-100"
+          type="Submit"
+        >
+          Login
+        </Button>
+      </form>
+
+      <span className=" text-xs ">
+        <span>Already have an account?</span>
+        <Link to={"/login"} className="text-cyan-900"> Login</Link>
+      </span>
+    </div>
+  );
+};
 
 export default Register;

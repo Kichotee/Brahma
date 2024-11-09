@@ -25,7 +25,7 @@ const theme = extendTheme({
       },
       variants:{
         solid: (props) => ({
-          bg: props.colorMode === 'dark' ? 'teal.300' : 'teal.500',
+          bg: props.colorMode === 'dark' ? 'teal.600' : 'cyan.800',
           color:  props.colorMode ==="dark" ?'#1818#18dd' :"#fff",
         }),
       }
