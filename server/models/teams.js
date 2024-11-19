@@ -11,6 +11,11 @@ const teamsSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+    goal: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: "Goals",
+    },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -21,13 +26,18 @@ const teamsSchema = mongoose.Schema(
       required: false,
       ref: "User",
     },
+    invites: {
+      type: [mongoose.Schema.Types.ObjectId],
+      required: false,
+      ref: "User",
+    },
     milestones: {
       type: [String],
       required: false,
     },
     category: {
       type: [mongoose.Schema.Types.ObjectId],
-      reuired: true,
+      required: true,
       ref: "Categories",
     },
     timeline: {
@@ -45,4 +55,3 @@ const teamsSchema = mongoose.Schema(
 );
 
 module.exports = mongoose.model("Teams", teamsSchema);
-

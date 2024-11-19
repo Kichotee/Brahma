@@ -1,12 +1,20 @@
-const errorHandler =(err,req,res,next)=>{
-    const statusCode= res.statuscode ? res.statusCode :500
-    res.status(statusCode)
+const errorHandler = (err, req, res, next) => {
+    // Log the error for server-side tracking
+    console.error(err);
 
-    res.json({
-        message:err.message,
-        stack: process.env.NODE_ENV==='production'? null:err.stack,
-    })
-}
+    // Determine status code
+    const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+
+    // Structured error response
+    res.status(statusCode).json({
+        success: false,
+        status: statusCode,
+        message: err.message || 'An unexpected error occurred',
+        ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
+        // Optional: Add error type for more detailed client-side handling
+        ...(err.name && { errorType: err.name })
+    });
+};
 module.exports={
     errorHandler,
 }

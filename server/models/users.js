@@ -13,6 +13,11 @@ const userSchema= mongoose.Schema({
         type:String,
        required:[true,'please enter name']
     },
+    verified:{
+      type:Boolean,
+      default:false,
+      required:true
+    }
 
 },{
     timestamps:true

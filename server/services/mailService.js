@@ -1,33 +1,17 @@
-const { MailtrapClient } = require("mailtrap");
 
-const TOKEN = process.env.Mailtrap_token;
+const nodemailer = require("nodemailer");
 
-const client = new MailtrapClient({
-  token: TOKEN,
-  testInboxId: 3234879,
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // true for port 465, false for other ports
+  auth: {
+    user: "timiprecious18@gmail.com",
+    pass: "vxot aoed agey mrrb",
+  },
+  
 });
 
-const sender = {
-  email: "hello@example.com",
-  name: "Mailtrap Test",
-};
-const recipients = [
-  {
-    email: "pt.timone@gmail.com",
-  }
-];
 
-
-
-  const sendMail=()=>{
-    client.testing
-  .send({
-    from: sender,
-    to: recipients,
-    subject: "You are awesome!",
-    text: "Congrats for sending test email with Mailtrap!",
-    category: "Integration Test",
-  })
-  .then(console.log, console.error)
-  }
-  module.exports={sendMail}
+  const sendMail=transporter.sendMail.bind(transporter)
+  module.exports=sendMail.bind(transporter);
